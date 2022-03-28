@@ -13,6 +13,10 @@ const addBtn = homeSection.querySelector("#add-btn");
 const newNoteModal = document.querySelector("#new-note-modal");
 const cancelBtn = newNoteModal.querySelector("#cancel-btn");
 const newNoteForm = newNoteModal.querySelector("#new-note-form");
+const userEdit = homeSection.querySelector("#user-edit");
+const editModal = document.querySelector("#edit-modal");
+const editForm = editModal.querySelector("#edit-form");
+const cancelEdit = editForm.querySelector("#cancel-edit");
 const loader = document.createElement("span")
 loader.className = "loader";
 loader.innerHTML = '<span class="box b1"></span><span class="box b2"></span><span class="box b3"></span><span class="box b4"></span>';
@@ -60,10 +64,18 @@ loginForm.addEventListener("submit", (e) => {
     })
 });
 
+function setUserDetails() {
+  const userName = homeSection.querySelector(".user-edit h2");
+  const userImage = homeSection.querySelector("#profile-img");
+  userName.innerHTML = user.name;
+  userImage.src = "http://localhost/project-api/images/" + user.image;
+}
+
 function showHomeSection() {
   loginSection.classList.remove("show");
   signupSection.classList.remove("show");
   homeSection.classList.add("show");
+  setUserDetails()
   getNotes()
 }
 
@@ -163,6 +175,36 @@ cancelBtn.addEventListener("click", e => {
   newNoteModal.querySelector("#note-id").value = '';
 });
 
+editForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const formData = new FormData(editForm);
+  formData.append("id", user.id);
+  const submitBtn = editForm.querySelector("button.primary");
+  submitBtn.disabled = true;
+  fetch("http://localhost/project-api/update-profile.php", {
+      method: "post",
+      body: formData
+    })
+    .then(res => res.json())
+    .then(res => {
+      submitBtn.disabled = false;
+      if(res.status === 1){
+        user = { ...user, ...res.user};
+        localStorage.setItem('user', JSON.stringify(user))
+        setUserDetails();
+        editModal.classList.remove("show");
+      }else{
+        alert(res.message);
+      }
+      console.log(res);
+    })
+    .catch(e => {
+      alert("Something went wrong!");
+      console.log(e)
+      submitBtn.disabled = false
+    })
+});
+
 newNoteForm.addEventListener("submit", (e) => {
   e.preventDefault();
   const formData = new FormData(newNoteForm);
@@ -202,4 +244,11 @@ newNoteForm.addEventListener("submit", (e) => {
   }
 })
 
+userEdit.addEventListener("click", e => {
+  editModal.classList.add("show");
+  editForm.name.value = user.name;
+});
 
+cancelEdit.addEventListener("click", e => {
+  editModal.classList.remove("show");
+});

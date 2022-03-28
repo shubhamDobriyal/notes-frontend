@@ -148,20 +148,49 @@ button.danger{
 
 }
 
-.user-header img{
+
+
+.user-header .user-edit{
+    display: flex;
+    margin-right: auto;
+    padding: 10px;
+    border-radius: 5px;
+    align-items: center;
+    position: relative;
+}
+
+.user-header .user-edit .profile-pic,
+.user-header .user-edit .edit-icon{
     margin-right: 10px;
     background: white;
     border-radius: 50%;
-    width: 25px;
-    height: 25px;
-    padding: 5px;
-    
+    width: 35px;
+    height: 35px;
+    object-fit: cover;
+    object-position: top;
+    padding: 2px;
 }
 
-.user-header h2{
+.user-header .user-edit h2{
     flex: 1;
-        
+    
 }
+.user-header .user-edit .edit-icon{
+    position: absolute;
+    left: 10px;
+    display: none;
+    object-fit: none;
+    object-position: center;
+}
+.user-header .user-edit:hover{
+    background-color: rgba(0, 0, 0, 0.26);
+    cursor: pointer;
+}
+
+.user-header .user-edit:hover .edit-icon{
+    display: block;
+}
+
 
 .notes-list{
     color: white;
@@ -269,7 +298,7 @@ button.danger{
     max-width: 700px;
 }
 
-.modal-body input, .modal-body textarea{
+.modal-body input, .modal-body textarea, .modal-body label{
     width: calc(100% - 40px);
     margin-bottom: 10px;
     display: block;

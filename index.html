@@ -62,7 +62,7 @@
             <span class="error-message"></span>
           </div>
           <div class="button-group">
-            <button class="primary">Sign Up</button>
+            <button id="signup-btn" class="primary">Sign Up</button>
           </div>
           <span class="login-text">If you already have an account,<br><a href="javascript:void"
               id="navigate-login">Login here</a></span>
@@ -73,8 +73,11 @@
 
   <section id="home-section">
     <div class="user-header">
-      <img src="assets/user.svg" />
-      <h2>Vikas Kukreti</h2>
+      <div class="user-edit" id="user-edit">
+        <img src="assets/user.svg" class="profile-pic" id="profile-img"/>
+        <h2></h2>
+        <img src="assets/edit.svg" class="edit-icon" alt="">
+      </div>
       <button class="secondary" id="add-btn">New Note</button>
       <button class="danger" id="logout-btn">Logout</button>
     </div>
@@ -95,6 +98,19 @@
         <input type="hidden" name="note_id" id="note-id">
         <button class="primary">Add Note</button>
       <button class="danger" id="cancel-btn">Cancel</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal" id="edit-modal">
+    <div class="modal-body">
+      <h3>Profile</h3>
+      <form id="edit-form" enctype="multipart/form-data" method="post">
+        <label>Select new profile image</label>
+        <input type="file" name="image" accept="image/png, image/jpeg" placeholder="Select Image"/>
+        <input type="text" name="name" placeholder="name">
+        <button class="primary">Update Profile</button>
+        <button class="danger" id="cancel-edit" type="button">Cancel</button>
       </form>
     </div>
   </div>
