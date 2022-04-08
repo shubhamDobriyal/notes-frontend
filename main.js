@@ -5,6 +5,7 @@ const navigateLogin = signupSection.querySelector("#navigate-login");
 const loginForm = loginSection.querySelector("form");;
 const signupForm = signupSection.querySelector("form");
 const loginError = loginForm.querySelector("#login-error");
+const signupError = signupForm.querySelector("#signup-error");
 const homeSection = document.querySelector("#home-section");
 const logoutBtn = homeSection.querySelector("#logout-btn");
 const listItems = homeSection.querySelector("#notes-list");
@@ -17,7 +18,7 @@ const userEdit = homeSection.querySelector("#user-edit");
 const editModal = document.querySelector("#edit-modal");
 const editForm = editModal.querySelector("#edit-form");
 const cancelEdit = editForm.querySelector("#cancel-edit");
-const loader = document.createElement("span")
+const loader = document.createElement("span");
 loader.className = "loader";
 loader.innerHTML = '<span class="box b1"></span><span class="box b2"></span><span class="box b3"></span><span class="box b4"></span>';
 
@@ -56,6 +57,41 @@ loginForm.addEventListener("submit", (e) => {
         loginError.classList.add("show");
       }
       else {
+        localStorage.setItem("is-logged-in", "true");
+        localStorage.setItem('user', JSON.stringify(res.user))
+        user = res.user;
+        showHomeSection()
+      }
+    })
+});
+
+signupForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const submitBtn = signupForm.querySelector("#signup-btn");
+  submitBtn.innerHTML = "";
+  submitBtn.appendChild(loader);
+  submitBtn.disabled = true;
+  const data = new FormData(signupForm);
+  const body = {
+    email: data.get("email"),
+    name: data.get("name"),
+    password: data.get("password"),
+    c_password: data.get("cnfrm_password")
+  }
+  fetch("http://localhost/project-api/sign-up.php", {
+    method: "POST",
+    body: JSON.stringify(body),
+    headers: {
+      "content-type": "application/json"
+    }
+  }).then(res => res.json())
+    .then(res => {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = "Sign Up";
+      if (!res.status) {
+        signupError.classList.add("show");
+        signupError.innerHTML = res.message;
+      } else {
         localStorage.setItem("is-logged-in", "true");
         localStorage.setItem('user', JSON.stringify(res.user))
         user = res.user;
@@ -144,17 +180,17 @@ function getNotes(){
   })
 }
 
-navigateSignup.addEventListener("click", () => {
+navigateSignup.addEventListener("click", (e) => {
   loginSection.classList.remove("show");
   signupSection.classList.add("show");
 });
 
-navigateLogin.addEventListener("click", () => {
+navigateLogin.addEventListener("click", (e) => {
   signupSection.classList.remove("show");
   loginSection.classList.add("show");
 });
 
-logoutBtn.addEventListener("click", e => {
+logoutBtn.addEventListener("click", (e) => {
   localStorage.removeItem("user");
   localStorage.removeItem("is-logged-in");
   homeSection.classList.remove("show");
@@ -162,7 +198,7 @@ logoutBtn.addEventListener("click", e => {
 
 });
 
-addBtn.addEventListener("click", e => {
+addBtn.addEventListener("click", (e) => {
   e.preventDefault();
   newNoteModal.classList.add("show");
 });
@@ -180,6 +216,8 @@ editForm.addEventListener("submit", (e) => {
   const formData = new FormData(editForm);
   formData.append("id", user.id);
   const submitBtn = editForm.querySelector("button.primary");
+  submitBtn.innerHTML = "";
+  submitBtn.appendChild(loader);
   submitBtn.disabled = true;
   fetch("http://localhost/project-api/update-profile.php", {
       method: "post",
@@ -187,6 +225,7 @@ editForm.addEventListener("submit", (e) => {
     })
     .then(res => res.json())
     .then(res => {
+      submitBtn.innerHTML = "Update Profile";
       submitBtn.disabled = false;
       if(res.status === 1){
         user = { ...user, ...res.user};
@@ -201,7 +240,7 @@ editForm.addEventListener("submit", (e) => {
     .catch(e => {
       alert("Something went wrong!");
       console.log(e)
-      submitBtn.disabled = false
+      submitBtn.disabled = false;
     })
 });
 
@@ -244,11 +283,11 @@ newNoteForm.addEventListener("submit", (e) => {
   }
 })
 
-userEdit.addEventListener("click", e => {
+userEdit.addEventListener("click", (e) => {
   editModal.classList.add("show");
   editForm.name.value = user.name;
 });
 
-cancelEdit.addEventListener("click", e => {
+cancelEdit.addEventListener("click", (e) => {
   editModal.classList.remove("show");
-});
+});     

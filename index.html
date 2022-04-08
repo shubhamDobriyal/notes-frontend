@@ -41,25 +41,22 @@
       </div>
       <div class="card-body">
         <form>
+          <div class="error-message" id="signup-error"></div>
           <div class="input-group input-user">
             <img alt="User Icon" src="assets/user.svg" />
             <input type="text" name="name" required placeholder="Username" />
-            <span class="error-message"></span>
           </div>
           <div class="input-group input-email">
             <img alt="Email Icon" src="assets/mail.svg" />
             <input type="email" name="email" required placeholder="Email" />
-            <span class="error-message"></span>
           </div>
           <div class="input-group input-password">
             <img alt="Password Icon" src="assets/lock.svg" />
             <input type="password" name="password" required placeholder="Password" />
-            <span class="error-message"></span>
           </div>
           <div class="input-group input-confirm-password">
             <img alt="Password Icon" src="assets/eye.svg" />
-            <input type="password" required placeholder="Confirm Password" />
-            <span class="error-message"></span>
+            <input type="password" name="cnfrm_password" required placeholder="Confirm Password" />
           </div>
           <div class="button-group">
             <button id="signup-btn" class="primary">Sign Up</button>

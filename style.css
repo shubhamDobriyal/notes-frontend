@@ -71,11 +71,18 @@ button.primary {
     border: none;
     padding: 12px 16px;
 }
+button.primary:hover {
+   cursor: pointer;
+}
 
 button.secondary {
     color: white;
     background: rgb(2, 73, 180);
 }
+
+button.secondary:hover {
+    cursor: pointer;
+ }
 
 #add-btn{
     margin-right: 10px;
@@ -85,6 +92,10 @@ button.danger{
     background: #b61717;
     color: white;
 }
+
+button.danger:hover {
+    cursor: pointer;
+ }
 
 .error-message{
     color:  red;
